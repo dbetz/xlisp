@@ -1,0 +1,21 @@
+(define (show-env env)
+  (if (or (null? env) (environment? env) (object? env))
+      (let outer ((frame env))
+        (if frame
+            (begin
+              (fresh-line)
+              (write frame)
+              (let inner ((frame frame)
+                          (names (%vector-ref frame 1))
+                          (i 2))
+                (if (< i (%vector-length frame))
+                    (begin
+                      (fresh-line)
+                      (display "  ")
+                      (write (car names))
+                      (display " = ")
+                      (write (%vector-ref frame i))
+                      (inner frame (cdr names) (+ i 1)))))
+              (outer (%vector-ref frame 0)))))
+      (error "Expecting an environment or an object" env))
+  (values))
