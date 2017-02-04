@@ -15,9 +15,27 @@ LIBOBJDIR=$(OBJDIR)/lib
 DIRS = $(OBJDIR) $(LIBDIR) $(BINDIR)
 OBJSUBDIRS = $(XLISPOBJDIR) $(LIBOBJDIR)
 
-CC=cc
+ifeq ($(CROSS),)
+  PREFIX=
+  EXT=
+else
+  ifeq ($(CROSS),win32)
+	PREFIX=i686-w64-mingw32-
+    OS=msys
+    EXT=.exe
+  else
+    ifeq ($(CROSS),rpi)
+      PREFIX=arm-linux-gnueabihf-
+      OS=raspberrypi
+      EXT=
+    else
+      $(error Unknown cross compilation selected)
+    endif
+  endif
+endif
+
+CC=$(PREFIX)gcc
 AR=ar
-RANLIB=ranlib
 ECHO=echo
 MKDIR=mkdir
 
@@ -49,7 +67,7 @@ clean:
 #########
 
 .PHONY:	xlisp
-xlisp:		$(BINDIR) $(BINDIR)/xlisp
+xlisp:		$(BINDIR) $(BINDIR)/xlisp$(EXT)
 
 XLISPOBJS=\
 $(XLISPOBJDIR)/xlisp.o
@@ -58,7 +76,7 @@ $(XLISPOBJDIR)/%.o:	%.c $(INC)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@$(ECHO) $@
 
-$(BINDIR)/xlisp:	$(XLISPOBJDIR) $(XLISPOBJS) library
+$(BINDIR)/xlisp$(EXT):	$(XLISPOBJDIR) $(XLISPOBJS) library
 	@$(CC) $(CFLAGS) $(XLISPOBJS) -L$(LIBDIR) -lxlisp -lm -o $@
 	@$(ECHO) $@
 
@@ -101,7 +119,6 @@ $(LIBOBJDIR)/%.o:	%.c $(INC) $(SRCDIR)/xlbcode.h
 
 $(LIBDIR)/libxlisp.a:	$(LIBOBJDIR) $(LIBOBJS)
 	@$(AR) crs $@ $(LIBOBJS)
-	@$(RANLIB) $@
 	@$(ECHO) $@
 
 ###############
