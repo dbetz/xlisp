@@ -13,15 +13,15 @@
 
 #include "xlisp.h"
 
-#ifndef EXPORT
-#define EXPORT __declspec(dllexport)
+#ifndef xlEXPORT
+#define xlEXPORT __declspec(dllexport)
 #endif
 
 /* prototypes */
 static xlValue myadd(void);
 
 /* initialize - the dll initialization function */
-EXPORT int initialize(void)
+xlEXPORT int initialize(void)
 {
     xlSubr("MY-ADD",myadd);
     return TRUE;
