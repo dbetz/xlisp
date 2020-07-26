@@ -192,11 +192,9 @@ void xrmhash(void)
 /* xrmquote - read macro %RM-QUOTE */
 void xrmquote(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* return the result */
@@ -207,11 +205,9 @@ void xrmquote(void)
 /* xrmdquote - read macro %RM-DOUBLE-QUOTE */
 void xrmdquote(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* return the result */
@@ -222,11 +218,9 @@ void xrmdquote(void)
 /* xrmbquote - read macro %RM-BACKQUOTE */
 void xrmbquote(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* return the result */
@@ -237,11 +231,9 @@ void xrmbquote(void)
 /* xrmcomma - read macro %RM-COMMA */
 void xrmcomma(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* return the result */
@@ -252,11 +244,9 @@ void xrmcomma(void)
 /* xrmlparen - read macro %RM-LEFT-PAREN */
 void xrmlparen(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* return the result */
@@ -267,11 +257,9 @@ void xrmlparen(void)
 /* xrmrparen - read macro %RM-RIGHT-PAREN */
 void xrmrparen(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* illegal in this context */
@@ -281,11 +269,9 @@ void xrmrparen(void)
 /* xrmsemi - read macro %RM-SEMICOLON */
 void xrmsemi(void)
 {
-    xlValue mch;
-    
     /* parse the argument list */
     xlVal = xlGetInputPort();
-    mch = xlGetArgChar();
+    (void)xlGetArgChar();
     xlLastArg();
     
     /* skip over the comment */
@@ -420,7 +406,7 @@ static xlValue read_symbol(xlValue fptr)
         return val;
     
     /* handle an implicit package reference */
-    if ((sname = strchr(buf,':')) == '\0')
+    if ((sname = strchr(buf,':')) == NULL )
         return xlInternCString(buf,xlGetValue(s_package),&key);
         
     /* handle an explicit package reference */
@@ -518,7 +504,7 @@ static xlValue read_string(xlValue fptr)
     }
 
     /* return the new string */
-    return xlTop() == xlNil ? xlPop(), xlMakeString(buf,len) : xlGetStrOutput(xlPop());
+    return xlTop() == xlNil ? (void)xlPop(), xlMakeString(buf,len) : xlGetStrOutput(xlPop());
 }
 
 /* read_special - parse an atom starting with '#' */

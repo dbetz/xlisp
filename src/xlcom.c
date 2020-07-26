@@ -378,8 +378,6 @@ static void do_namedlambda(xlValue form,int cont)
 /* do_method - compile the (METHOD ... ) expression */
 static void do_method(xlValue form,int cont)
 {
-    xlValue object,selector,fargs,body;
-
     /* check syntax */
     if (xlAtomP(form) || !xlSymbolP(xlCar(form)))
         xlError("expecting class",form);
@@ -389,10 +387,10 @@ static void do_method(xlValue form,int cont)
         xlError("expecting argument list",form);
 
     /* get the arguments */
-    object = xlCar(form);
-    selector = xlCar(xlCdr(form));
-    fargs = xlCar(xlCdr(xlCdr(form)));
-    body = xlCdr(xlCdr(xlCdr(form)));
+    (void)xlCar(form);
+    (void)xlCar(xlCdr(form));
+    (void)xlCar(xlCdr(xlCdr(form)));
+    (void)xlCdr(xlCdr(xlCdr(form)));
 
     cd_fundefinition(xlCar(form),xlCar(xlCdr(form)),xlCdr(xlCdr(form)));
 
