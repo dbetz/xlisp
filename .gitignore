@@ -1,0 +1,6 @@
+.vs
+*.filter
+*.suo
+*.obj
+*.pdb
+*.ilk
