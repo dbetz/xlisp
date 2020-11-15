@@ -1,5 +1,6 @@
 .vs
 *.filter
+*.user
 *.suo
 *.obj
 *.pdb
