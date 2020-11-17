@@ -1,5 +1,5 @@
 # xlisp
-# The API
+## The API
 
 Here is the basic form of a C program that uses `xlisp.dll`.
 
@@ -9,33 +9,29 @@ Here is the basic form of a C program that uses `xlisp.dll`.
 /* main - the main routine */
 void main(int argc,char *argv[])
 {
+    xlCallbacks *callbacks = NULL ;
 
-xlCallbacks *callbacks = NULL ;
+    /* get the default callback structure */
+    callbacks = xlDefaultCallbacks(argc,argv);
 
-/* get the default callback structure */
-callbacks = xlDefaultCallbacks(argc,argv);
+    /* initialize xlisp */
+    xlInit(callbacks,argc,argv,NULL);
 
-/* initialize xlisp */
-xlInit(callbacks,argc,argv,NULL);
+    /* add your functions here */
 
-/* add your functions here */
+    /* display the banner */
+    xlInfo("%s\\n",xlBanner());
 
-/* display the banner */
-xlInfo("%s\\n",xlBanner());
+    /* load the initialization file */
+    xlLoadFile("xlisp.ini");
 
-/* load the initialization file */
-xlLoadFile("xlisp.ini");
-
-/* call the read/eval/print loop */
-xlCallFunctionByName(NULL,0,"*TOPLEVEL*",0);
-
+    /* call the read/eval/print loop */
+    xlCallFunctionByName(NULL,0,"*TOPLEVEL*",0);
 }
 ```
-External functions should be declared as functions taking no 
-arguments and returning an xlValue which is the result. Arguments should be fetched by using the routines below.
+External functions should be declared as functions taking no arguments and returning an xlValue which is the result. Arguments should be fetched by using the routines below.
 
-For functions that take optional arguments, call the predicate
-`xlMoreArgsP()` to determine if more arguments are present before
+For functions that take optional arguments, call the predicate `xlMoreArgsP()` to determine if more arguments are present before
 calling the argument fetching function.
 
 When you have fetched all of the arguments, call `xlLastArg()` 
@@ -85,8 +81,7 @@ xlGetArgUnnamedStream()
 xlGetArgClosure()
 xlGetArgEnv()
 ```
-All of the argument fetching functions return their result as an
-`xlValue`. 
+All of the argument fetching functions return their result as an `xlValue`. 
 
 If you want to get the fixnum or flonum in a form that C can understand, use the following macros. To return a fixnum result, use
 the function `xlMakeFixnum()` passing it a C long. To return a flonum result, use the function `xlMakeFlonum()` passing it a C double.

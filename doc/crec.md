@@ -78,6 +78,6 @@ Supporting functions:
 (GET-CRECORD-STRING cpointer offset length) --> string
 (SET-CRECORD-STRING! cpointer offset length string)
 (GET-CRECORD-TYPE-SIZE type-id) --> size
-(NULL-POINTER? cpointer) --> \#f if pointer has been freed
+(NULL-POINTER? cpointer) --> #f if pointer has been freed
 (CRECORD-TYPE type-symbol) --> type-id
 ```
