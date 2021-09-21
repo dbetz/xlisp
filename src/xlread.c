@@ -420,7 +420,7 @@ static xlValue read_symbol(xlValue fptr)
         return val;
     
     /* handle an implicit package reference */
-    if ((sname = strchr(buf,':')) == '\0')
+    if ((sname = strchr(buf,':')) == NULL)
         return xlInternCString(buf,xlGetValue(s_package),&key);
         
     /* handle an explicit package reference */
