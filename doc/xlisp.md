@@ -789,10 +789,9 @@ Compute the length of a list.
 Creates pairs from corresponding elements of keys and data and pushes these onto
 alist.
 
-For instance:
+For instance: ` (pairlis '(x y) '(1 2) '((z . 3))) => ((x . 1) (y . 2) (z . 3)) `
 
- ```lisp 
- (pairlis '(x y) '(1 2) '((z . 3))) => ((x . 1) (y . 2) (z . 3))
+```lisp
  (COPY-LIST list)
 ```
 Makes a top level copy of the list.
