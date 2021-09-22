@@ -19,10 +19,12 @@ ccmake ../xlisp
 ```
 So, now we have made a build directory outside of xlisp, so that the build
 products don't get strewn all over our pristine source. The `ccmake` command is
-a curses front end to CMake that I like. From there you can pick the type of
-build, then type "g" for generate. This drops you out in a shell prompt, where
-it has made makefiles for you (on other platforms, you may have other types of
-build files generated). After that you can:
+a curses front end to CMake that I like. In `ccmake` you would first
+_configure_ (with "c"), then select your build type (typically "Release"), then
+_configure_ again, then _generate_ (with "g").  You will then be back in your
+shell, where makefiles have been set up for you. (CMake isn't constrained to
+only makefiles, but can also be instructed to generate most other kinds of
+build files).  After that you can:
 
 ```bash
 make
