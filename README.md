@@ -6,7 +6,7 @@ Version 3.0
 February 18, 2006
 
 ## Building with CMake
-We've added the ability to build with CMake to simplify building XLisp on your
+We've added the ability to build with CMake to simplify building xlisp on your
 system. The way that we expect this to work on Linux systems using `make` would
 be to first make a build directory. For this walkthrough we'll say that we
 start _in_ the xlisp directory:
