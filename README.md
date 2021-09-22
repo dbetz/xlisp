@@ -50,4 +50,4 @@ Bedford, US, NH 03110
 
 All Rights Reserved
 
-See the included file LICENSE for the full license.
+See the included file `LICENSE.txt` for the full license.
