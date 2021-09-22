@@ -35,7 +35,9 @@ install(TARGETS
     PUBLIC_HEADER DESTINATION "./include")
 
 install(FILES
-    api.doc crec.doc xlisp.doc
+    doc/api.md
+    doc/crec.md
+    doc/xlisp.md
     COMPONENT xlisp_component
     DESTINATION "./doc")
 
