@@ -5,6 +5,10 @@ project(XLisp
     LANGUAGES C)
 
 add_library(xlisp "")
+if(UNIX)
+    target_link_libraries(xlisp m)
+    set_target_properties(xlisp PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif (UNIX)
 add_subdirectory(src)
 
 add_library(ext SHARED "")
