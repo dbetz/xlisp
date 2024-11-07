@@ -33,13 +33,13 @@ xlEXPORT long xlosRand(long n)
 }
 
 /* xlosOpenText - open an ascii file */
-xlEXPORT FILE *xlosOpenText(char *name,char *mode)
+xlEXPORT FILE *xlosOpenText(const char *name,const char *mode)
 {
     return fopen(name,mode);
 }
 
 /* xlosOpenBinary - open a binary file */
-xlEXPORT FILE *xlosOpenBinary(char *name,char *mode)
+xlEXPORT FILE *xlosOpenBinary(const char *name,const char *mode)
 {
     char bmode[10];
     strcpy(bmode,mode); strcat(bmode,"b");
@@ -129,7 +129,7 @@ xlEXPORT void xlosFree(void *ptr)
 }
 
 /* xlosGetEnv - get the value of an environment variable */
-xlEXPORT char *xlosGetEnv(char *name)
+xlEXPORT const char *xlosGetEnv(const char *name)
 {
     return getenv(name);
 }

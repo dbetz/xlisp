@@ -19,11 +19,11 @@ extern xlValue s_unbound;
 static char progpath[LBSIZE+1] = "./";
 static int lposition;
 
-static char *osloadpath(void);
-static char *osparsepath(char **pp);
+static const char *osloadpath(void);
+static const char *osparsepath(const char **pp);
 static void osexit(int sts);
-static void oserror(char *msg);
-static int osfmodtime(char *fname,xlFIXTYPE *pModTime);
+static void oserror(const char *msg);
+static int osfmodtime(const char *fname,xlFIXTYPE *pModTime);
 static int ostgetc(void);
 static void ostputc(int ch);
 static int ostatbol(void);
@@ -47,19 +47,20 @@ xlXSubrDef xlosXSubrTab[] = {
 {0,0}};
 
 /* osloadpath - return the load path */
-static char *osloadpath(void)
+static const char *osloadpath(void)
 {
-    char *path;
+    const char *path;
     if ((path = getenv("XLPATH")) == NULL)
         path = progpath;
     return path;
 }
 
 /* osparsepath - parse a path string */
-static char *osparsepath(char **pp)
+static const char *osparsepath(const char **pp)
 {
     static char buf[256];
-    char *src,*dst;
+    const char *src;
+    char *dst;
     
     /* find the next directory in the path */
     for (src = *pp, dst = buf; *src != '\0'; *dst++ = *src++)
@@ -85,19 +86,19 @@ static void osexit(int sts)
 }
 
 /* osfindsubr - find a built-in function */
-static xlValue (*osfindsubr(char *name))(void)
+static xlValue (*osfindsubr(const char *name))(void)
 {
     return NULL;
 }
 
 /* oserror - print an error message */
-static void oserror(char *msg)
+static void oserror(const char *msg)
 {
     xlInfo("error: %s\n",msg);
 }
 
 /* osfmodtime - return the modification time of a file */
-static int osfmodtime(char *fname,xlFIXTYPE *pModTime)
+static int osfmodtime(const char *fname,xlFIXTYPE *pModTime)
 {                        
     struct stat info;
     int sts = stat(fname,&info);
@@ -146,7 +147,7 @@ static void osflushoutput(void)
 /* xsystem - execute a system command */
 static xlValue xsystem(void)
 {
-    char *cmdLine = xlGetString(xlGetArgString());
+    const char *cmdLine = xlGetString(xlGetArgString());
     int sts;
     xlLastArg();
     sts = system(cmdLine);
@@ -178,7 +179,7 @@ static xlValue xloadlibrary(void)
 #endif
 
 /* xlDefaultCallbacks - setup the default o/s interface callbacks */
-xlEXPORT xlCallbacks *xlDefaultCallbacks(char *programPath)
+xlEXPORT xlCallbacks *xlDefaultCallbacks(const char *programPath)
 {
     static xlCallbacks callbacks;
 

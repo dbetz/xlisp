@@ -85,19 +85,19 @@ static void osexit(int sts)
 }
 
 /* osfindsubr - find a built-in function */
-static xlValue (*osfindsubr(char *name))(void)
+static xlValue (*osfindsubr(const char *name))(void)
 {
     return NULL;
 }
 
 /* oserror - print an error message */
-static void oserror(char *msg)
+static void oserror(const char *msg)
 {
     xlInfo("error: %s\n",msg);
 }
 
 /* osfmodtime - return the modification time of a file */
-static int osfmodtime(char *fname,xlFIXTYPE *pModTime)
+static int osfmodtime(const char *fname,xlFIXTYPE *pModTime)
 {                        
     struct stat info;
     int sts = stat(fname,&info);
@@ -272,7 +272,7 @@ static xlValue xloadlibrary(void)
 }
 
 /* xlDefaultCallbacks - setup the default o/s interface callbacks */
-xlEXPORT xlCallbacks *xlDefaultCallbacks(char *programPath)
+xlEXPORT xlCallbacks *xlDefaultCallbacks(const char *programPath)
 {
     static xlCallbacks callbacks;
 

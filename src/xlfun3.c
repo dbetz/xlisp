@@ -10,10 +10,10 @@
 extern xlValue s_package;
 
 /* forward declarations */
-static char *showstring(char *str,int bch);
+static const char *showstring(const char *str,int bch);
 static void withfile_continuation(void);
 static void withfile_unwind(void);
-static void do_withfile(short flags,char *mode);
+static void do_withfile(short flags,const char *mode);
 static void do_load(xlValue print);
 static void load_continuation(void);
 static void load_unwind(void);
@@ -124,7 +124,7 @@ static void ccode_unwind(void)
 static xlValue *ccode_print(xlValue *p)
 {
     xlCContinuation *cc;
-    char *str;
+    const char *str;
     int cnt;
     cc = (xlCContinuation *)*--p;
     xlErrPutStr("\n ");
@@ -139,7 +139,7 @@ static xlValue *ccode_print(xlValue *p)
 }
 
 /* showstring - show the next string up to a given delimiter */
-static char *showstring(char *str,int bch)
+static const char *showstring(const char *str,int bch)
 {
     char buf[20],*p;
     int ch;
@@ -201,7 +201,7 @@ static void withfile_unwind(void)
 xlCContinuation withfile_cc = { withfile_continuation,withfile_unwind,1,"Withfile:file" };
 
 /* do_withfile - handle the 'call-with-xxx-file' functions */
-static void do_withfile(short flags,char *mode)
+static void do_withfile(short flags,const char *mode)
 {
     xlValue name,file;
     FILE *fp;

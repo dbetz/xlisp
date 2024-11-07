@@ -37,7 +37,7 @@ static int getivcnt(xlValue cls,int ivar);
 static xlValue copylist(xlValue list);
 
 /* xlClass - make a new class object */
-xlEXPORT xlValue xlClass(char *name,xlValue super,char *vars)
+xlEXPORT xlValue xlClass(const char *name,xlValue super,const char *vars)
 {
     xlValue class,new,last = xlNil;
     xlFIXTYPE superCnt,iCnt = 0;
@@ -97,7 +97,7 @@ xlEXPORT xlValue xlClass(char *name,xlValue super,char *vars)
 }
 
 /* xlMethod - add a method to a class */
-xlEXPORT void xlMethod(xlValue cls,char *selector,xlValue (*handler)(void))
+xlEXPORT void xlMethod(xlValue cls,const char *selector,xlValue (*handler)(void))
 {
     xlValue binding;
 
@@ -109,7 +109,7 @@ xlEXPORT void xlMethod(xlValue cls,char *selector,xlValue (*handler)(void))
 }
 
 /* xlXMethod - add a method returning multiple values to a class */
-xlEXPORT void xlXMethod(xlValue cls,char *selector,void (*handler)(void))
+xlEXPORT void xlXMethod(xlValue cls,const char *selector,void (*handler)(void))
 {
     xlValue binding;
 

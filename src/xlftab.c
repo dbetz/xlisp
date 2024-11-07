@@ -498,7 +498,7 @@ void xlInitFunctions(void)
 }
 
 /* xlFindSubr - find a subr in the internal table */
-xlValue (*xlFindSubr(char *name))(void)
+xlValue (*xlFindSubr(const char *name))(void)
 {
     xlSubrDef *sdp;
     xlXSubrDef *xsdp;

@@ -15,7 +15,7 @@ static xlOFFTYPE off,foff;
 static FILE *fp;
 
 /* local prototypes */
-static xlValue requirepackage(char *name);
+static xlValue requirepackage(const char *name);
 static void freeimage(void);
 static void setoffset(void);
 static void writenode(xlValue node);
@@ -27,12 +27,12 @@ static xlOFFTYPE cvoptr(xlValue p);
 static xlValue *getvspace(xlValue node,xlFIXTYPE size);
 
 /* xlSaveImage - save the memory image */
-int xlSaveImage(char *fname)
+int xlSaveImage(const char *fname)
 {
     xlNodeSegment *nseg;
     xlFIXTYPE size,n;
     xlValue p,*vp;
-    char *cp;
+    const char *cp;
 
     /* open the output file */
     if ((fp = xlosOpenBinary(fname,"w")) == NULL)
@@ -142,7 +142,7 @@ int xlSaveImage(char *fname)
 }
 
 /* xlRestoreImage - restore a saved memory image */
-int xlRestoreImage(char *fname)
+int xlRestoreImage(const char *fname)
 {
     xlFIXTYPE ssize,size;
     xlValue p,*vp;
@@ -293,7 +293,7 @@ done:
 }
 
 /* requirepackage - require that a package exist */
-static xlValue requirepackage(char *name)
+static xlValue requirepackage(const char *name)
 {
     xlValue pack = xlFindPackage(name);
     if (pack == xlNil)
@@ -352,7 +352,7 @@ static void setoffset(void)
 /* writenode - write a node to a file */
 static void writenode(xlValue node)
 {
-    char *p = (char *)&node->value;
+    const char *p = (const char *)&node->value;
     int n = sizeof(union xlNodeValue);
     putc(node->type,fp);
     while (--n >= 0)
@@ -362,7 +362,7 @@ static void writenode(xlValue node)
 /* writeptr - write a pointer to a file */
 static void writeptr(xlOFFTYPE off)
 {
-    char *p = (char *)&off;
+    const char *p = (const char *)&off;
     int n = sizeof(xlOFFTYPE);
     while (--n >= 0)
         putc(*p++,fp);

@@ -113,7 +113,7 @@ static int putcword(int w);
 static void fixup(int chn);
 
 /* integrable function table */
-typedef struct { char *nt_name; int nt_code,nt_args; } NTDEF;
+typedef struct { const char *nt_name; int nt_code,nt_args; } NTDEF;
 static NTDEF ntab[] = {
 {       "ATOM",                 xlopATOM,       1       },
 {       "EQ?",                  xlopEQ,         2       },
@@ -141,7 +141,7 @@ static NTDEF ntab2[] = {
 };
 
 /* special form table */
-typedef struct { char *ft_name; void (*ft_fcn)(xlValue,int); } FTDEF;
+typedef struct { const char *ft_name; void (*ft_fcn)(xlValue,int); } FTDEF;
 static FTDEF ftab[] = {
 {       "QUOTE",                do_quote                },
 {       "LAMBDA",               do_lambda               },
@@ -240,7 +240,7 @@ static void do_expr(xlValue expr,int cont)
 /* in_ntab - check for a function in ntab */
 static int in_ntab(xlValue expr,int cont)
 {
-    char *pname = xlGetString(xlGetPName(xlCar(expr)));
+    const char *pname = xlGetString(xlGetPName(xlCar(expr)));
     NTDEF *nptr;
     if (!xlDebugModeP) {
         for (nptr = ntab; nptr->nt_name; ++nptr)
@@ -261,7 +261,7 @@ static int in_ntab(xlValue expr,int cont)
 static int in_ftab(xlValue expr,int cont)
 {
     FTDEF *fptr;
-    char *pname = xlGetString(xlGetPName(xlCar(expr)));
+    const char *pname = xlGetString(xlGetPName(xlCar(expr)));
     for (fptr = ftab; fptr->ft_name; ++fptr)
         if (strcmp(pname,fptr->ft_name) == 0) {
             (*fptr->ft_fcn)(xlCdr(expr),cont);
@@ -1409,7 +1409,8 @@ static void do_mvbind(xlValue form,int cont)
 /* make_code_object - build a code object */
 static xlValue make_code_object(xlValue fun)
 {
-    unsigned char *src,*dst,*end;
+    unsigned const char *src,*end;
+    unsigned char *dst;
     xlValue code,p;
     int i;
 

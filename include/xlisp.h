@@ -85,6 +85,9 @@ typedef unsigned long   xlUFIXTYPE;
 #ifndef xlSTACKSIZE
 #define xlSTACKSIZE     65536
 #endif
+#ifndef xlDUMMYSIZE
+#define xlDUMMYSIZE
+#endif
 #ifndef xlEXPORT
 #if     !defined(XLISPDLL)
 #define xlEXPORT
@@ -515,18 +518,18 @@ extern xlFIXTYPE xlTotal;               /* total number of bytes of memory in us
 extern xlFIXTYPE xlGCCalls;             /* number of calls to the garbage collector */
 
 /* argument list */
-extern char **xlCmdLineArgV;
+extern const char **xlCmdLineArgV;
 extern int xlCmdLineArgC;
 
 /* subr definition structure */
 typedef struct {
-    char *name;
+    const char *name;
     xlValue (*subr)(void);
 } xlSubrDef;
 
 /* xsubr definition structure */
 typedef struct {
-    char *name;
+    const char *name;
     void (*subr)(void);
 } xlXSubrDef;
 
@@ -542,7 +545,7 @@ typedef void xlCClassFreeHandler(void *ptr);
 /* C class definition structure */
 typedef struct xlCClassDef xlCClassDef;
 struct xlCClassDef {
-    char *name;
+    const char *name;
     xlSubrDef *methods;
     xlXSubrDef *xmethods;
     xlCClassFreeHandler *free;
@@ -593,7 +596,7 @@ typedef struct {
     void (*cc_cont)(void);      /* continuation function */
     void (*cc_unwind)(void);    /* unwind function (or NULL) */
     int cc_cnt;                 /* number of values on control stack */
-    char *cc_names;             /* names of the values on the stack (comma separated) */
+    const char *cc_names;             /* names of the values on the stack (comma separated) */
 } xlCContinuation;
 
 /* error target structure */
@@ -604,12 +607,12 @@ typedef struct xlErrorTarget {
 
 /* callback structure */
 typedef struct {
-    char *(*loadPath)(void);
-    char *(*parsePath)(char **pp);
+    const char *(*loadPath)(void);
+    const char *(*parsePath)(const char **pp);
     int (*directorySeparator)(void);
-    xlValue (*(*findSubr)(char *name))(void);
-    void (*error)(char *msg);
-    int (*fileModTime)(char *fname,xlFIXTYPE *pModTime);
+    xlValue (*(*findSubr)(const char *name))(void);
+    void (*error)(const char *msg);
+    int (*fileModTime)(const char *fname,xlFIXTYPE *pModTime);
     int (*consoleGetC)(void);
     void (*consolePutC)(int ch);
     int (*consoleAtBOLP)(void);
@@ -654,36 +657,36 @@ xlEXPORT extern xlValue xlSymMEscape;
 #define xlsError        -2
 
 /* xlmain.c */
-xlEXPORT int xlInit(xlCallbacks *callbacks,int argc,char *argv[],char *workspace);
-xlEXPORT char *xlBanner(void);
+xlEXPORT int xlInit(xlCallbacks *callbacks,int argc,const char *argv[],const char *workspace);
+xlEXPORT const char *xlBanner(void);
 xlEXPORT void xlContinue(void);
 xlEXPORT void xlBreak(void);
 xlEXPORT void xlCleanup(void);
 xlEXPORT void xlTopLevel(void);
 xlEXPORT void xlWrapUp(void);
-xlEXPORT void xlError(char *msg,xlValue arg);
-xlEXPORT void xlFmtError(char *fmt,...);
-xlEXPORT void xlAbort(char *msg,xlValue arg);
-xlEXPORT void xlFmtAbort(char *fmt,...);
-xlEXPORT void xlFatal(char *fmt,...);
-xlEXPORT void xlInfo(char *fmt,...);
+xlEXPORT void xlError(const char *msg,xlValue arg);
+xlEXPORT void xlFmtError(const char *fmt,...);
+xlEXPORT void xlAbort(const char *msg,xlValue arg);
+xlEXPORT void xlFmtAbort(const char *fmt,...);
+xlEXPORT void xlFatal(const char *fmt,...);
+xlEXPORT void xlInfo(const char *fmt,...);
 void xlShowErr(xlValue fun);
 
 /* xlapi.c */
-xlEXPORT void xlSetSoftwareType(char *type);
+xlEXPORT void xlSetSoftwareType(const char *type);
 xlEXPORT int xlCallFunction(xlValue *values,int vmax,xlValue fun,int argc,...);
-xlEXPORT int xlCallFunctionByName(xlValue *values,int vmax,char *fname,int argc,...);
+xlEXPORT int xlCallFunctionByName(xlValue *values,int vmax,const char *fname,int argc,...);
 xlEXPORT int xlSendMessage(xlValue *values,int vmax,xlValue obj,xlValue selector,int argc,...);
-xlEXPORT int xlSendMessageByName(xlValue *values,int vmax,xlValue obj,char *selector,int argc,...);
-xlEXPORT int xlEvaluateCString(xlValue *values,int vmax,char *str);
-xlEXPORT int xlEvaluateString(xlValue *values,int vmax,char *str,xlFIXTYPE len);
+xlEXPORT int xlSendMessageByName(xlValue *values,int vmax,xlValue obj,const char *selector,int argc,...);
+xlEXPORT int xlEvaluateCString(xlValue *values,int vmax,const char *str);
+xlEXPORT int xlEvaluateString(xlValue *values,int vmax,const char *str,xlFIXTYPE len);
 xlEXPORT int xlEvaluate(xlValue *values,int vmax,xlValue expr);
-xlEXPORT int xlLoadFile(char *fname);
-xlEXPORT FILE *xlLoadOpen(char *name,char *mode,char *pathsym,char *rpath);
-xlEXPORT int xlReadFromCString(char *str,xlValue *pval);
-xlEXPORT int xlReadFromString(char *str,xlFIXTYPE len,xlValue *pval);
-xlEXPORT char *xlWriteToString(xlValue expr,char *buf,xlFIXTYPE len);
-xlEXPORT char *xlDisplayToString(xlValue expr,char *buf,xlFIXTYPE len);
+xlEXPORT int xlLoadFile(const char *fname);
+xlEXPORT FILE *xlLoadOpen(const char *name,const char *mode,const char *pathsym,char *rpath);
+xlEXPORT int xlReadFromCString(const char *str,xlValue *pval);
+xlEXPORT int xlReadFromString(const char *str,xlFIXTYPE len,xlValue *pval);
+xlEXPORT const char *xlWriteToString(xlValue expr,char *buf,xlFIXTYPE len);
+xlEXPORT const char *xlDisplayToString(xlValue expr,char *buf,xlFIXTYPE len);
 xlEXPORT void xlFreeString(char *str);
 xlEXPORT xlValue xlGetArgInstance(xlValue cls);
 xlEXPORT void xlSetIdleHandler(void (*handler)(void *data),void *data);
@@ -701,11 +704,11 @@ int xlDecodeInstruction(xlValue fptr,xlValue code,xlFIXTYPE lc,xlValue env);
 /* xldmem.c */
 xlEXPORT xlValue xlCons(xlValue x,xlValue y);
 xlEXPORT xlValue xlNewFrame(int type,xlValue parent,xlFIXTYPE size);
-xlEXPORT xlValue xlMakeString(char *str,xlFIXTYPE len);
-xlEXPORT xlValue xlMakeCString(char *str);
+xlEXPORT xlValue xlMakeString(const char *str,xlFIXTYPE len);
+xlEXPORT xlValue xlMakeCString(const char *str);
 xlEXPORT xlValue xlCopyString(xlValue str);
 xlEXPORT xlValue xlMakeFileStream(FILE *fp,short flags);
-xlEXPORT xlValue xlMakeUnnamedStream(char *buf,xlFIXTYPE len);
+xlEXPORT xlValue xlMakeUnnamedStream(const char *buf,xlFIXTYPE len);
 xlEXPORT xlValue xlMakeObjectStream(xlValue obj,short flags);
 xlEXPORT xlValue xlMakeSymbol(xlValue pname);
 xlEXPORT xlValue xlMakeFixnum(xlFIXTYPE n);
@@ -713,9 +716,9 @@ xlEXPORT xlValue xlMakeFlonum(xlFLOTYPE n);
 xlEXPORT xlValue xlMakeChar(int ch);
 xlEXPORT xlValue xlMakeClosure(xlValue code,xlValue env);
 xlEXPORT xlValue xlMakePromise(xlValue code,xlValue env);
-xlEXPORT xlValue xlMakeSubr(char *name,xlValue (*fcn)(void));
-xlEXPORT xlValue xlMakeXSubr(char *name,void (*fcn)(void));
-xlEXPORT xlValue xlNewPackage(char *name);
+xlEXPORT xlValue xlMakeSubr(const char *name,xlValue (*fcn)(void));
+xlEXPORT xlValue xlMakeXSubr(const char *name,void (*fcn)(void));
+xlEXPORT xlValue xlNewPackage(const char *name);
 xlEXPORT xlValue xlNewVector(xlFIXTYPE size);
 xlEXPORT xlValue xlNewTable(xlFIXTYPE size);
 xlEXPORT xlValue xlNewString(xlFIXTYPE size);
@@ -735,7 +738,7 @@ void xlMark(xlValue);
 void xlCheckVectorSpace(void);
 xlEXPORT int xlProtect(xlValue *p);
 xlEXPORT int xlUnprotect(xlValue *p);
-char *xlCopyCString(char *str);
+char *xlCopyCString(const char *str);
 void xlInitMemory(xlFIXTYPE ssize);
 void xlResetStack(void);
 
@@ -746,7 +749,9 @@ xlValue xfaslreadprocedure(void);
 
 /* xlftab.c */
 void xlInitFunctions(void);
-xlValue (*xlFindSubr(char *name))(void);
+xlValue (*xlFindSubr(const char *name))(void);
+extern xlSubrDef xlosSubrTab[xlDUMMYSIZE];
+extern xlXSubrDef xlosXSubrTab[xlDUMMYSIZE];
 
 /* xlfun1.c */
 xlValue xcons(void);
@@ -1057,8 +1062,8 @@ void xloadnoisily(void);
 void xforce(void);
 
 /* xlimage.c */
-int xlSaveImage(char *fname);
-int xlRestoreImage(char *fname);
+int xlSaveImage(const char *fname);
+int xlRestoreImage(const char *fname);
 
 /* xlinit.c */
 void xlInitWorkspace(int ssize);
@@ -1106,9 +1111,9 @@ xlEXPORT void xlFlush(void);
 xlEXPORT xlFIXTYPE xlGetStrLength(xlValue stream);
 xlEXPORT xlValue xlGetStrOutput(xlValue stream);
 xlEXPORT void xlStdPrint(xlValue expr);
-xlEXPORT void xlStdPutStr(char *str);
+xlEXPORT void xlStdPutStr(const char *str);
 xlEXPORT void xlErrPrint(xlValue expr);
-xlEXPORT void xlErrPutStr(char *str);
+xlEXPORT void xlErrPutStr(const char *str);
 
 /* xliterseq.c */
 void xfind(void);
@@ -1197,9 +1202,9 @@ xlValue xgtr(void);
 xlEXPORT xlFLOTYPE xlCnvToFlotype(xlValue val);
 
 /* xlobj.c */
-xlEXPORT xlValue xlClass(char *name,xlValue super,char *vars);
-xlEXPORT void xlMethod(xlValue cls,char *selector,xlValue (*handler)(void));
-xlEXPORT void xlXMethod(xlValue cls,char *selector,void (*handler)(void));
+xlEXPORT xlValue xlClass(const char *name,xlValue super,const char *vars);
+xlEXPORT void xlMethod(xlValue cls,const char *selector,xlValue (*handler)(void));
+xlEXPORT void xlXMethod(xlValue cls,const char *selector,void (*handler)(void));
 xlEXPORT int xlInstanceP(xlValue cls,xlValue obj);
 xlEXPORT xlValue xlNewInstance(xlValue cls);
 int xlFindIVarOffset(xlValue cls,xlValue sym,int *pOffset);
@@ -1221,7 +1226,7 @@ xlEXPORT void xlWrite(xlValue expr,xlValue file);
 xlEXPORT xlFIXTYPE xlWriteSize(xlValue val);
 xlEXPORT void xlNewline(xlValue fptr);
 xlEXPORT void xlFreshLine(xlValue fptr);
-xlEXPORT void xlPutStr(xlValue fptr,char *str);
+xlEXPORT void xlPutStr(xlValue fptr,const char *str);
 
 /* xlread.c */
 void xlInitReader(void);
@@ -1238,29 +1243,29 @@ void xrmrparen(void);
 void xrmsemi(void);
 xlEXPORT xlValue xlCharType(int ch);
 int xlNumberStringP(char *str,xlValue *pval);
-int xlRadixNumberStringP(char *str,int radix,xlValue *pval);
+int xlRadixNumberStringP(const char *str,int radix,xlValue *pval);
 
 /* xlsym.c */
 void xlInitPackages(void);
-xlEXPORT xlValue xlFindPackage(char *name);
+xlEXPORT xlValue xlFindPackage(const char *name);
 int xlUsePackage(xlValue dst,xlValue src);
 int xlUnusePackage(xlValue dst,xlValue src);
 xlValue xlIntern(xlValue name,xlValue package,xlValue *pkey);
-xlValue xlInternAndExport(char *name,xlValue package);
+xlValue xlInternAndExport(const char *name,xlValue package);
 void xlUnintern(xlValue sym,xlValue package);
 int xlVisibleP(xlValue sym,xlValue package);
 int xlPresentP(xlValue sym,xlValue package);
-xlValue xlFindSymbol(char *name,xlValue package,xlValue *pkey);
+xlValue xlFindSymbol(const char *name,xlValue package,xlValue *pkey);
 int xlImport(xlValue sym,xlValue package);
-int xlImportAndExport(xlValue srcpack,char *name,xlValue dstpack);
+int xlImportAndExport(xlValue srcpack,const char *name,xlValue dstpack);
 int xlExport(xlValue sym,xlValue package);
 int xlUnexport(xlValue sym,xlValue package);
-xlEXPORT void xlSubr(char *name,xlValue (*fcn)(void));
-xlEXPORT void xlXSubr(char *name,void (*fcn)(void));
-xlEXPORT xlValue xlEnter(char *name);
-xlEXPORT xlValue xlEnterKeyword(char *name);
-xlEXPORT xlValue xlInternString(char *name,xlFIXTYPE len,xlValue package,xlValue *pkey);
-xlEXPORT xlValue xlInternCString(char *name,xlValue package,xlValue *pkey);
+xlEXPORT void xlSubr(const char *name,xlValue (*fcn)(void));
+xlEXPORT void xlXSubr(const char *name,void (*fcn)(void));
+xlEXPORT xlValue xlEnter(const char *name);
+xlEXPORT xlValue xlEnterKeyword(const char *name);
+xlEXPORT xlValue xlInternString(const char *name,xlFIXTYPE len,xlValue package,xlValue *pkey);
+xlEXPORT xlValue xlInternCString(const char *name,xlValue package,xlValue *pkey);
 xlEXPORT xlValue xlGetProp(xlValue sym,xlValue prp);
 xlEXPORT void xlPutProp(xlValue sym,xlValue val,xlValue prp);
 xlEXPORT void xlRemProp(xlValue sym,xlValue prp);
@@ -1271,8 +1276,8 @@ xlValue xlRemoveEntryFromTable(xlValue table,xlValue key);
 /* xlansi.c */
 xlEXPORT void xlosSetRand(long seed);
 xlEXPORT long xlosRand(long n);
-xlEXPORT FILE *xlosOpenText(char *name,char *mode);
-xlEXPORT FILE *xlosOpenBinary(char *name,char *mode);
+xlEXPORT FILE *xlosOpenText(const char *name,const char *mode);
+xlEXPORT FILE *xlosOpenBinary(const char *name,const char *mode);
 xlEXPORT int xlosClose(FILE *fp);
 xlEXPORT long xlosTell(FILE *fp);
 xlEXPORT int xlosSeek(FILE *fp,long offset,int whence);
@@ -1283,19 +1288,19 @@ xlEXPORT void xlosInfo(void);
 xlEXPORT time_t xlosTime(void);
 xlEXPORT void *xlosAlloc(xlFIXTYPE size);
 xlEXPORT void xlosFree(void *ptr);
-xlEXPORT char *xlosGetEnv(char *name);
+xlEXPORT const char *xlosGetEnv(const char *name);
 
 /* xlosint.c */
-xlEXPORT char *xlosLoadPath(void);
-xlEXPORT char *xlosParsePath(char **pp);
+xlEXPORT const char *xlosLoadPath(void);
+xlEXPORT const char *xlosParsePath(const char **pp);
 xlEXPORT int xlosDirectorySeparator(void);
 xlEXPORT void xlosExit(int sts);
-xlEXPORT xlValue (*xlosFindSubr(char *name))(void);
-xlEXPORT void xlosError(char *msg);
-xlEXPORT int xlosFileModTime(char *fname,xlFIXTYPE *pModTime);
+xlEXPORT xlValue (*xlosFindSubr(const char *name))(void);
+xlEXPORT void xlosError(const char *msg);
+xlEXPORT int xlosFileModTime(const char *fname,xlFIXTYPE *pModTime);
 xlEXPORT int xlosConsoleGetC(void);
 xlEXPORT void xlosConsolePutC(int ch);
-xlEXPORT void xlosConsolePutS(char *str);
+xlEXPORT void xlosConsolePutS(const char *str);
 xlEXPORT int xlosConsoleAtBOLP(void);
 xlEXPORT void xlosConsoleFlush(void);
 xlEXPORT int xlosConsoleCheck(void);
@@ -1304,11 +1309,9 @@ xlEXPORT void xlosFlushOutput(void);
 /* ??stuff.c */
 xlEXPORT void xlSetCallbacks(xlCallbacks *cb);
 void xlosEnter(void);
-extern xlSubrDef xlosSubrTab[];
-extern xlXSubrDef xlosXSubrTab[];
 
 /* setup default callbacks */
-xlEXPORT xlCallbacks *xlDefaultCallbacks(char *programPath);
+xlEXPORT xlCallbacks *xlDefaultCallbacks(const char *programPath);
 
 #endif
 

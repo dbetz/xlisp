@@ -19,12 +19,12 @@ static xlValue findinlist(xlValue list,xlValue val);
 static void addtotable(xlValue table,xlValue sym);
 static void removefromtable(xlValue table,xlValue sym);
 static xlValue findintable(xlValue table,xlValue sym);
-static xlValue findnameintable(xlValue array,char *name);
+static xlValue findnameintable(xlValue array,const char *name);
 static void entersymbol(xlValue sym,xlValue table);
 static xlValue findprop(xlValue sym,xlValue prp);
-static int comparestr(char *cstr,xlValue str);
+static int comparestr(const char *cstr,xlValue str);
 static xlFIXTYPE hash(xlValue val,xlFIXTYPE size);
-static xlUFIXTYPE hashstr(char *str,xlFIXTYPE len);
+static xlUFIXTYPE hashstr(const char *str,xlFIXTYPE len);
 
 /* xlInitPackages - initialize the packages */
 void xlInitPackages(void)
@@ -45,10 +45,10 @@ void xlInitPackages(void)
 }
 
 /* xlSubr - define a built-in function */
-xlEXPORT void xlSubr(char *name,xlValue (*fcn)(void))
+xlEXPORT void xlSubr(const char *name,xlValue (*fcn)(void))
 {
     xlValue sym,key,package;
-    char *p;
+    const char *p;
     if ((p = strchr(name,':')) == NULL)
         package = xlGetValue(s_package);
     else {
@@ -66,10 +66,10 @@ xlEXPORT void xlSubr(char *name,xlValue (*fcn)(void))
 }
 
 /* xlXSubr - define a built-in function that returns multiple values */
-xlEXPORT void xlXSubr(char *name,void (*fcn)(void))
+xlEXPORT void xlXSubr(const char *name,void (*fcn)(void))
 {
     xlValue sym,key,package;
-    char *p;
+    const char *p;
     if ((p = strchr(name,':')) == NULL)
         package = xlGetValue(s_package);
     else {
@@ -87,20 +87,20 @@ xlEXPORT void xlXSubr(char *name,void (*fcn)(void))
 }
 
 /* xlEnter - enter a symbol in the current package */
-xlEXPORT xlValue xlEnter(char *name)
+xlEXPORT xlValue xlEnter(const char *name)
 {
     xlValue key;
     return xlInternCString(name,xlGetValue(s_package),&key);
 }
 
 /* xlEnterKeyword - enter a keyword */
-xlEXPORT xlValue xlEnterKeyword(char *name)
+xlEXPORT xlValue xlEnterKeyword(const char *name)
 {
     return xlInternAndExport(name,xlKeywordPackage);
 }
 
 /* xlInternString - intern a symbol in a package */
-xlEXPORT xlValue xlInternString(char *name,xlFIXTYPE len,xlValue package,xlValue *pkey)
+xlEXPORT xlValue xlInternString(const char *name,xlFIXTYPE len,xlValue package,xlValue *pkey)
 {
     xlValue sym;
     if ((sym = xlFindSymbol(name,package,pkey)) == xlNil) {
@@ -115,7 +115,7 @@ xlEXPORT xlValue xlInternString(char *name,xlFIXTYPE len,xlValue package,xlValue
 }
 
 /* xlInternCString - intern a symbol in a package */
-xlEXPORT xlValue xlInternCString(char *name,xlValue package,xlValue *pkey)
+xlEXPORT xlValue xlInternCString(const char *name,xlValue package,xlValue *pkey)
 {
     xlValue sym;
     if ((sym = xlFindSymbol(name,package,pkey)) == xlNil) {
@@ -130,7 +130,7 @@ xlEXPORT xlValue xlInternCString(char *name,xlValue package,xlValue *pkey)
 }
 
 /* xlFindPackage - find a package by name */
-xlEXPORT xlValue xlFindPackage(char *name)
+xlEXPORT xlValue xlFindPackage(const char *name)
 {
     xlValue pack,p;
     for (pack = xlPackages; xlPackageP(pack); pack = xlGetNextPackage(pack))
@@ -211,7 +211,7 @@ int xlPresentP(xlValue sym,xlValue package)
 }
 
 /* xlFindSymbol - find a symbol in a package */
-xlValue xlFindSymbol(char *name,xlValue package,xlValue *pkey)
+xlValue xlFindSymbol(const char *name,xlValue package,xlValue *pkey)
 {
     xlValue list,sym;
     if ((sym = findnameintable(xlGetExtern(package),name)) != xlNil) {
@@ -247,7 +247,7 @@ xlValue xlIntern(xlValue name,xlValue package,xlValue *pkey)
 }
 
 /* xlInternAndExport - intern a symbol in a package and make it external */
-xlValue xlInternAndExport(char *name,xlValue package)
+xlValue xlInternAndExport(const char *name,xlValue package)
 {
     xlValue sym,key;
     sym = xlInternCString(name,package,&key);
@@ -322,7 +322,7 @@ static xlValue findintable(xlValue table,xlValue sym)
 }
 
 /* findnameintable - find a symbol by name in a hash table */
-static xlValue findnameintable(xlValue table,char *name)
+static xlValue findnameintable(xlValue table,const char *name)
 {
     xlFIXTYPE i = hashstr(name,strlen(name)) % xlGetSize(table);
     xlValue sym;
@@ -384,9 +384,9 @@ static xlValue findprop(xlValue sym,xlValue prp)
 }
 
 /* comparestr - compare a c string with a lisp string */
-static int comparestr(char *cstr,xlValue str)
+static int comparestr(const char *cstr,xlValue str)
 {
-    char *lstr = xlGetString(str);
+    const char *lstr = xlGetString(str);
     xlFIXTYPE len = xlGetSLength(str);
     for (; --len >= 0 && *cstr != '\0'; ++cstr, ++lstr)
         if (*cstr != *lstr)
@@ -461,7 +461,7 @@ static xlFIXTYPE hash(xlValue val,xlFIXTYPE size)
 }
 
 /* hashstr - hash a symbol name string */
-static xlUFIXTYPE hashstr(char *str,xlFIXTYPE len)
+static xlUFIXTYPE hashstr(const char *str,xlFIXTYPE len)
 {
     xlUFIXTYPE i = 0;
     while (--len >= 0)

@@ -16,7 +16,7 @@ extern xlValue xlUnboundObject,s_package,s_eql,k_uses,k_test,k_testnot,k_key;
 extern xlValue xlPackages,xlLispPackage,xlLispPackage,xlLispPackage;
 
 /* forward declarations */
-static xlValue cxr(char *adstr);
+static xlValue cxr(const char *adstr);
 static xlValue member(int (*fcn)(xlValue,xlValue));
 static xlValue assoc(int (*fcn)(xlValue,xlValue));
 static xlValue copytree(xlValue tree);
@@ -122,7 +122,7 @@ xlValue xcdddar(void) { return cxr("addd"); }
 xlValue xcddddr(void) { return cxr("dddd"); }
 
 /* cxr - common car/cdr routine */
-static xlValue cxr(char *adstr)
+static xlValue cxr(const char *adstr)
 {
     xlValue list;
 
@@ -1709,8 +1709,8 @@ int xlEqual(xlValue arg1,xlValue arg2)
 /* stringequal - compare two strings */
 static int stringequal(xlValue s1,xlValue s2)
 {
-    char *p1 = xlGetString(s1);
-    char *p2 = xlGetString(s2);
+    const char *p1 = xlGetString(s1);
+    const char *p2 = xlGetString(s2);
     xlFIXTYPE len;
 
     /* compare the vector lengths */

@@ -7,7 +7,7 @@
 #include "xlisp.h"
 
 /* main - the main routine */
-int main(int argc,char *argv[])
+int main(int argc,const char *argv[])
 {
     xlCallbacks *callbacks = xlDefaultCallbacks(argv[0]);
     xlInit(callbacks,argc,argv,NULL);

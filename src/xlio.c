@@ -391,7 +391,7 @@ xlEXPORT void xlStdPrint(xlValue expr)
 }
 
 /* xlStdPutStr - print a string to *standard-output* */
-xlEXPORT void xlStdPutStr(char *str)
+xlEXPORT void xlStdPutStr(const char *str)
 {
     xlPutStr(xlCurOutput(),str);
 }
@@ -403,7 +403,7 @@ xlEXPORT void xlErrPrint(xlValue expr)
 }
 
 /* xlErrPutStr - print a string to *error-output* */
-xlEXPORT void xlErrPutStr(char *str)
+xlEXPORT void xlErrPutStr(const char *str)
 {
     xlPutStr(xlCurError(),str);
 }

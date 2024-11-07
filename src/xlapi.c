@@ -14,10 +14,10 @@ static void *idleData;
 extern xlValue *xlcatch,s_eval,s_load,xlUnboundObject,xlEofObject;
 
 /* prototypes */
-static char *PrintToString(xlValue expr,char *buf,xlFIXTYPE len,int escFlag);
+static const char *PrintToString(xlValue expr,char *buf,xlFIXTYPE len,int escFlag);
 
 /* xlSetSoftwareType - set the *SOFTWARE-TYPE* variable */
-xlEXPORT void xlSetSoftwareType(char *type)
+xlEXPORT void xlSetSoftwareType(const char *type)
 {
     xlSetValue(xlEnter("*SOFTWARE-TYPE*"),xlEnter(type));
 }
@@ -58,7 +58,7 @@ xlEXPORT int xlCallFunction(xlValue *values,int vmax,xlValue fun,int argc,...)
 }
 
 /* xlCallFunctionByName - call a function by name */
-xlEXPORT int xlCallFunctionByName(xlValue *values,int vmax,char *fname,int argc,...)
+xlEXPORT int xlCallFunctionByName(xlValue *values,int vmax,const char *fname,int argc,...)
 {
     xlValue *save_catch,sym,fun;
     xlErrorTarget target;
@@ -136,7 +136,7 @@ xlEXPORT int xlSendMessage(xlValue *values,int vmax,xlValue obj,xlValue selector
 }
 
 /* xlSendMessageByName - send a message to an object */
-xlEXPORT int xlSendMessageByName(xlValue *values,int vmax,xlValue obj,char *sname,int argc,...)
+xlEXPORT int xlSendMessageByName(xlValue *values,int vmax,xlValue obj,const char *sname,int argc,...)
 {
     xlValue *save_catch,selector;
     xlErrorTarget target;
@@ -175,13 +175,13 @@ xlEXPORT int xlSendMessageByName(xlValue *values,int vmax,xlValue obj,char *snam
 }
 
 /* xlEvaluateCString - evaluate an expression from a c string */
-xlEXPORT int xlEvaluateCString(xlValue *values,int vmax,char *str)
+xlEXPORT int xlEvaluateCString(xlValue *values,int vmax,const char *str)
 {
     return xlEvaluateString(values,vmax,str,(xlFIXTYPE)strlen(str));
 }
 
 /* xlEvaluateString - evaluate an expression from a string */
-xlEXPORT int xlEvaluateString(xlValue *values,int vmax,char *str,xlFIXTYPE len)
+xlEXPORT int xlEvaluateString(xlValue *values,int vmax,const char *str,xlFIXTYPE len)
 {
     xlValue val;
     int sts;
@@ -191,13 +191,13 @@ xlEXPORT int xlEvaluateString(xlValue *values,int vmax,char *str,xlFIXTYPE len)
 }
 
 /* xlReadFromCString - read an expression from a c string */
-xlEXPORT int xlReadFromCString(char *str,xlValue *pval)
+xlEXPORT int xlReadFromCString(const char *str,xlValue *pval)
 {
     return xlReadFromString(str,(xlFIXTYPE)strlen(str),pval);
 }
 
 /* xlReadFromString - read an expression from a string */
-xlEXPORT int xlReadFromString(char *str,xlFIXTYPE len,xlValue *pval)
+xlEXPORT int xlReadFromString(const char *str,xlFIXTYPE len,xlValue *pval)
 {
     xlErrorTarget target;
     int sts;
@@ -222,7 +222,7 @@ xlEXPORT int xlReadFromString(char *str,xlFIXTYPE len,xlValue *pval)
 }
 
 /* xlLoadFile - load an XLISP source file */
-xlEXPORT int xlLoadFile(char *fname)
+xlEXPORT int xlLoadFile(const char *fname)
 {
     xlErrorTarget target;
     xlValue val;
@@ -247,7 +247,7 @@ xlEXPORT int xlLoadFile(char *fname)
 }
 
 /* xlLoadOpen - open a file for loading */
-xlEXPORT FILE *xlLoadOpen(char *name,char *mode,char *pathsym,char *rpath)
+xlEXPORT FILE *xlLoadOpen(const char *name,const char *mode,const char *pathsym,char *rpath)
 {
     xlValue dir,fullpath,path;
     xlFIXTYPE dirlen,namelen;
@@ -301,19 +301,19 @@ xlEXPORT int xlEvaluate(xlValue *values,int vmax,xlValue expr)
 }
 
 /* xlWriteToString - print an expression to a string with quoting */
-xlEXPORT char *xlWriteToString(xlValue expr,char *buf,xlFIXTYPE len)
+xlEXPORT const char *xlWriteToString(xlValue expr,char *buf,xlFIXTYPE len)
 {
     return PrintToString(expr,buf,len,TRUE);
 }
 
 /* xlDisplayToString - print an expression to a string */
-xlEXPORT char *xlDisplayToString(xlValue expr,char *buf,xlFIXTYPE len)
+xlEXPORT const char *xlDisplayToString(xlValue expr,char *buf,xlFIXTYPE len)
 {
     return PrintToString(expr,buf,len,FALSE);
 }
 
 /* PrintToString - print an expression to a string */
-static char *PrintToString(xlValue expr,char *buf,xlFIXTYPE len,int escFlag)
+static const char *PrintToString(xlValue expr,char *buf,xlFIXTYPE len,int escFlag)
 {
     xlErrorTarget target;
     xlValue stream;

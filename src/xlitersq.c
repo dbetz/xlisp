@@ -61,7 +61,7 @@ static void seqkeytest_unwind(void);
 static xlValue *seqdummy_print(xlValue *);
 static xlValue *seqkey_print(xlValue *);
 static xlValue *seqtest_print(xlValue *);
-static void show_seqcontinuation(xlValue *,char *);
+static void show_seqcontinuation(xlValue *,const char *);
 
 static void mapseq(xlValue ivalue,MACTION action);
 static void do_mapseq(void);
@@ -72,7 +72,7 @@ static void mapseq_unwind(void);
 static xlValue *mapseq_print(xlValue *);
 static void mapseqdummy_restore(void);
 static xlValue *mapseqdummy_print(xlValue *);
-static void show_mapseqcontinuation(xlValue *,char *);
+static void show_mapseqcontinuation(xlValue *,const char *);
 
 static void maplist(xlValue ivalue,ACTION action);
 static void do_maplist(xlValue *);
@@ -83,7 +83,7 @@ static void maplist_unwind(void);
 static xlValue *maplist_print(xlValue *);
 static void maplistdummy_restore(void);
 static xlValue *maplistdummy_print(xlValue *);
-static void show_maplistcontinuation(xlValue *,char *);
+static void show_maplistcontinuation(xlValue *,const char *);
 
 static xlValue is_find(int op,xlValue val,xlValue *d)
 {
@@ -915,7 +915,7 @@ static xlValue *seqtest_print(xlValue *p)
 }
 
 /* show_seqcontinuation - show a sequence key or test continuation */
-static void show_seqcontinuation(xlValue *d,char *tag)
+static void show_seqcontinuation(xlValue *d,const char *tag)
 {
     xlErrPutStr("\n ");
     xlErrPutStr(tag);
@@ -1013,7 +1013,7 @@ static xlValue *mapseqdummy_print(xlValue *p)
 }
 
 /* show_mapseqcontinuation - print a map continuation */
-static void show_mapseqcontinuation(xlValue *d,char *tag)
+static void show_mapseqcontinuation(xlValue *d,const char *tag)
 {
     xlErrPutStr("\n ");
     xlErrPutStr(tag);
@@ -1160,7 +1160,7 @@ static xlValue *maplistdummy_print(xlValue *p)
 }
 
 /* show_maplistcontinuation - print a map list continuation */
-static void show_maplistcontinuation(xlValue *d,char *tag)
+static void show_maplistcontinuation(xlValue *d,const char *tag)
 {
     xlErrPutStr("\n ");
     xlErrPutStr(tag);

@@ -18,16 +18,16 @@ extern xlValue s_printcase,k_downcase;
 extern xlValue s_fixfmt,s_flofmt,xlUnboundObject;
 
 static void print(xlValue fptr,xlValue vptr,int escflag,int depth);
-static void putatm(xlValue fptr,char *tag,xlValue val);
+static void putatm(xlValue fptr,const char *tag,xlValue val);
 static void putfstream(xlValue fptr,xlValue val);
 static void putstring(xlValue fptr,xlValue str);
 static void putqstring(xlValue fptr,xlValue str);
 static void putsymbol(xlValue fptr,xlValue sym);
 static void putsympname(xlValue fptr,xlValue pname);
 static void putpackage(xlValue fptr,xlValue val);
-static void putsubr(xlValue fptr,char *tag,xlValue val);
-static void putclosure(xlValue fptr,char *tag,xlValue val);
-static void putcode(xlValue fptr,char *tag,xlValue val);
+static void putsubr(xlValue fptr,const char *tag,xlValue val);
+static void putclosure(xlValue fptr,const char *tag,xlValue val);
+static void putcode(xlValue fptr,const char *tag,xlValue val);
 static void putnumber(xlValue fptr,xlFIXTYPE n);
 static void putoct(xlValue fptr,int n);
 static void putflonum(xlValue fptr,xlFLOTYPE n);
@@ -88,7 +88,7 @@ xlEXPORT void xlFreshLine(xlValue fptr)
 }
 
 /* xlPutStr - output a string */
-xlEXPORT void xlPutStr(xlValue fptr,char *str)
+xlEXPORT void xlPutStr(xlValue fptr,const char *str)
 {
     while (*str)
         xlPutC(fptr,*str++);
@@ -230,7 +230,7 @@ static void print(xlValue fptr,xlValue vptr,int escflag,int depth)
 }
 
 /* putatm - output an atom */
-static void putatm(xlValue fptr,char *tag,xlValue val)
+static void putatm(xlValue fptr,const char *tag,xlValue val)
 {
     sprintf(buf,"#<%s #x",tag); xlPutStr(fptr,buf);
     sprintf(buf,xlAFMT,val); xlPutStr(fptr,buf);
@@ -357,20 +357,20 @@ static void putpackage(xlValue fptr,xlValue val)
 }
 
 /* putsubr - output a subr/fsubr */
-static void putsubr(xlValue fptr,char *tag,xlValue val)
+static void putsubr(xlValue fptr,const char *tag,xlValue val)
 {
     sprintf(buf,"#<%s %s>",tag,xlGetSubrName(val));
     xlPutStr(fptr,buf);
 }
 
 /* putclosure - output a closure */
-static void putclosure(xlValue fptr,char *tag,xlValue val)
+static void putclosure(xlValue fptr,const char *tag,xlValue val)
 {
     putcode(fptr,tag,xlGetCode(val));
 }
 
 /* putcode - output a code object */
-static void putcode(xlValue fptr,char *tag,xlValue val)
+static void putcode(xlValue fptr,const char *tag,xlValue val)
 {
     xlValue name;
     if ((name = xlGetElement(val,1)) != xlNil) {
@@ -449,7 +449,7 @@ static void putforeignptr(xlValue fptr,xlValue val)
 }
 
 /* must be in type id order */
-static char *typenames[] = {
+static const char *typenames[] = {
 "FREE",
 "CONS",
 "SYMBOL",

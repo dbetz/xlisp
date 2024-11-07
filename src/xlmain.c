@@ -13,7 +13,7 @@ XLISP 3.3, September 6, 2002 Copyright (c) 1984-2002, by David Betz"
 
 /* global variables */
 int xlCmdLineArgC = 0;                  /* command line argument count */
-char **xlCmdLineArgV = NULL;            /* array of command line arguments */
+const char **xlCmdLineArgV = NULL;            /* array of command line arguments */
 xlEXPORT int xlInitializedP = FALSE;    /* true if initialization is done */
 xlEXPORT FILE *xlTranscriptFP = NULL;   /* trace file pointer */
 
@@ -23,10 +23,10 @@ extern xlFIXTYPE xlNSSize,xlVSSize;
 extern int xlTraceBytecodes;
 
 /* local prototypes */
-static void fmterror(char *tag,char *fmt,va_list ap);
+static void fmterror(const char *tag,const char *fmt,va_list ap);
 
 /* xlInit - the initialization routine */
-xlEXPORT int xlInit(xlCallbacks *callbacks,int argc,char *argv[],char *workspace)
+xlEXPORT int xlInit(xlCallbacks *callbacks,int argc,const char *argv[],const char *workspace)
 {
     xlErrorTarget target;
     int src,dst;
@@ -103,7 +103,7 @@ xlEXPORT int xlInit(xlCallbacks *callbacks,int argc,char *argv[],char *workspace
 }
 
 /* xlBanner - display the banner */
-xlEXPORT char *xlBanner(void)
+xlEXPORT const char *xlBanner(void)
 {
     return BANNER;
 }
@@ -141,7 +141,7 @@ xlEXPORT void xlWrapUp(void)
 }
 
 /* xlError - print an error message */
-xlEXPORT void xlError(char *msg,xlValue arg)
+xlEXPORT void xlError(const char *msg,xlValue arg)
 {
     char fmt[256];
     sprintf(fmt,"%s - ~S",msg);
@@ -149,7 +149,7 @@ xlEXPORT void xlError(char *msg,xlValue arg)
 }
 
 /* xlFmtError - report an error */
-xlEXPORT void xlFmtError(char *fmt,...)
+xlEXPORT void xlFmtError(const char *fmt,...)
 {
     va_list ap;
     va_start(ap,fmt);
@@ -159,7 +159,7 @@ xlEXPORT void xlFmtError(char *fmt,...)
 }
 
 /* xlAbort - print an error message and abort */
-xlEXPORT void xlAbort(char *msg,xlValue arg)
+xlEXPORT void xlAbort(const char *msg,xlValue arg)
 {
     char fmt[256];
     sprintf(fmt,"%s - ~S",msg);
@@ -167,7 +167,7 @@ xlEXPORT void xlAbort(char *msg,xlValue arg)
 }
 
 /* xlFmtAbort - report an error */
-xlEXPORT void xlFmtAbort(char *fmt,...)
+xlEXPORT void xlFmtAbort(const char *fmt,...)
 {
     va_list ap;
     va_start(ap,fmt);
@@ -177,7 +177,7 @@ xlEXPORT void xlFmtAbort(char *fmt,...)
 }
 
 /* fmterror - report an error */
-static void fmterror(char *tag,char *fmt,va_list ap)
+static void fmterror(const char *tag,const char *fmt,va_list ap)
 {
     xlValue stream = xlGetValue(s_stderr);
     int ch;
@@ -244,7 +244,7 @@ void xlShowErr(xlValue fun)
 }
 
 /* xlFatal - print a fatal error message and exit */
-xlEXPORT void xlFatal(char *fmt,...)
+xlEXPORT void xlFatal(const char *fmt,...)
 {
     char buf[1024];
     va_list ap;
@@ -256,7 +256,7 @@ xlEXPORT void xlFatal(char *fmt,...)
 }
 
 /* xlInfo - display debugging information */
-xlEXPORT void xlInfo(char *fmt,...)
+xlEXPORT void xlInfo(const char *fmt,...)
 {
     char buf[1024],*p=buf;
     va_list ap;

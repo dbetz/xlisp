@@ -107,7 +107,7 @@ xlEXPORT xlValue xlNewFrame(int type,xlValue parent,xlFIXTYPE size)
 }
 
 /* xlMakeString - convert a string to a string node */
-xlEXPORT xlValue xlMakeString(char *str,xlFIXTYPE len)
+xlEXPORT xlValue xlMakeString(const char *str,xlFIXTYPE len)
 {
     xlValue val = xlNewString(len);
     memcpy(xlGetString(val),str,(size_t)len);
@@ -115,7 +115,7 @@ xlEXPORT xlValue xlMakeString(char *str,xlFIXTYPE len)
 }
 
 /* xlMakeCString - convert a c string to a string node */
-xlEXPORT xlValue xlMakeCString(char *str)
+xlEXPORT xlValue xlMakeCString(const char *str)
 {
     size_t len = strlen(str);
     xlValue val = xlNewString((xlFIXTYPE)len);
@@ -138,7 +138,7 @@ xlEXPORT xlValue xlMakeFileStream(FILE *fp,short flags)
 }
 
 /* xlMakeUnnamedStream - convert a character array to a ustream */
-xlEXPORT xlValue xlMakeUnnamedStream(char *buf,xlFIXTYPE len)
+xlEXPORT xlValue xlMakeUnnamedStream(const char *buf,xlFIXTYPE len)
 {
     /* create an unnamed stream */
     xlCPush(xlNewUStream());
@@ -219,7 +219,7 @@ xlEXPORT xlValue xlMakePromise(xlValue code,xlValue env)
 }
 
 /* xlMakeSubr - convert a function to a subr */
-xlEXPORT xlValue xlMakeSubr(char *name,xlValue (*subr)(void))
+xlEXPORT xlValue xlMakeSubr(const char *name,xlValue (*subr)(void))
 {
     xlValue val;
     val = allocnode(xlSUBR);
@@ -229,7 +229,7 @@ xlEXPORT xlValue xlMakeSubr(char *name,xlValue (*subr)(void))
 }
 
 /* xlMakeXSubr - convert a function to an xsubr */
-xlEXPORT xlValue xlMakeXSubr(char *name,void (*subr)(void))
+xlEXPORT xlValue xlMakeXSubr(const char *name,void (*subr)(void))
 {
     xlValue val;
     val = allocnode(xlXSUBR);
@@ -264,7 +264,7 @@ xlEXPORT xlValue xlNewString(xlFIXTYPE size)
 }
 
 /* xlNewPackage - create a new package */
-xlEXPORT xlValue xlNewPackage(char *name)
+xlEXPORT xlValue xlNewPackage(const char *name)
 {
     xlValue pack;
     if (xlFindPackage(name) != xlNil)
@@ -901,7 +901,7 @@ xlEXPORT int xlUnprotect(xlValue *p)
 }
 
 /* xlCopyCString - copy a string */
-char *xlCopyCString(char *str)
+char *xlCopyCString(const char *str)
 {
     char *copy = xlosAlloc(strlen(str) + 1);
     if (copy) strcpy(copy,str);

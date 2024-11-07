@@ -23,7 +23,7 @@
 #define FMT_ARGS        12
 #define FMT_ARGS2       13
 
-typedef struct { int ot_code; char *ot_name; int ot_fmt; } OTDEF;
+typedef struct { int ot_code; const char *ot_name; int ot_fmt; } OTDEF;
 static OTDEF otab[] = {
 {       xlopBRT,        "BRT",              FMT_WORD    },
 {       xlopBRF,        "BRF",              FMT_WORD    },
@@ -94,7 +94,7 @@ static xlValue findivarname(xlValue env,int lev,int off);
 /* xlDecodeProcedure - decode the instructions in a code object */
 void xlDecodeProcedure(xlValue fptr,xlValue code,xlValue env)
 {
-    unsigned char *cp;
+    unsigned const char *cp;
     xlFIXTYPE len,lc;
     int n;
     xlCPush(env);
@@ -126,7 +126,7 @@ void xlDecodeProcedure(xlValue fptr,xlValue code,xlValue env)
 /* xlDecodeInstruction - decode a single bytecode instruction */
 int xlDecodeInstruction(xlValue fptr,xlValue code,xlFIXTYPE lc,xlValue env)
 {
-    unsigned char *cp;
+    unsigned const char *cp;
     char buf[100];
     OTDEF *op;
     xlValue tmp;

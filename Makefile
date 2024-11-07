@@ -2,12 +2,12 @@
 # XLISP Makefile #
 ##################
 
-XLISPDIR=./xlisp
-SRCDIR=./src
-HDRDIR=./include
-OBJDIR=./obj
-LIBDIR=./lib
-BINDIR=./bin
+XLISPDIR=xlisp
+SRCDIR=src
+HDRDIR=include
+OBJDIR=obj
+LIBDIR=lib
+BINDIR=bin
 
 XLISPOBJDIR=$(OBJDIR)/xlisp
 LIBOBJDIR=$(OBJDIR)/lib
@@ -34,8 +34,14 @@ else
   endif
 endif
 
-CC=$(PREFIX)gcc
-AR=ar
+ifeq ($(TARGET),p2llvm)
+  CC=/opt/p2llvm/bin/clang -fno-exceptions --target=p2 -Dprintf=__simple_printf
+  AR=/opt/p2llvm/bin/llvm-ar
+else
+  CC=$(PREFIX)gcc
+  AR=ar
+endif
+
 ECHO=echo
 MKDIR=mkdir
 

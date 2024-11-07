@@ -649,7 +649,7 @@ static xlValue read_radix(xlValue fptr,int radix)
 }
 
 /* xlRadixNumberStringP - convert a string to a number in the specified radix */
-int xlRadixNumberStringP(char *str,int radix,xlValue *pval)
+int xlRadixNumberStringP(const char *str,int radix,xlValue *pval)
 {
     xlFIXTYPE val = 0;
     int ch;
@@ -706,7 +706,7 @@ static int getsymbol(xlValue fptr,char *buf)
 int xlNumberStringP(char *str,xlValue *pval)
 {
     int dl,dot,dr;
-    char *p;
+    const char *p;
 
     /* initialize */
     p = str; dl = dot = dr = 0;
@@ -798,13 +798,13 @@ static xlValue tentry(int ch)
 }
 
 /* defmacro - define a read macro */
-static void defmacro(int ch,xlValue type,char *name)
+static void defmacro(int ch,xlValue type,const char *name)
 {
     xlSetElement(xlGetValue(xlSymReadTable),ch,xlCons(type,xlGetValue(xlEnter(name))));
 }
 
 /* defdmacro - define a dispatching read macro */
-static void defdmacro(xlValue dtable,int ch,char *name)
+static void defdmacro(xlValue dtable,int ch,const char *name)
 {
     xlSetElement(dtable,ch,xlGetValue(xlEnter(name)));
 }
@@ -813,7 +813,7 @@ static void defdmacro(xlValue dtable,int ch,char *name)
 void xlInitReader(void)
 {
     xlValue rtable,dtable;
-    char *p;
+    const char *p;
     int ch;
     
     /* create the read table */

@@ -17,13 +17,13 @@ void xlSetCallbacks(xlCallbacks *cb)
 }
 
 /* xlosLoadPath - return the load path */
-xlEXPORT char *xlosLoadPath(void)
+xlEXPORT const char *xlosLoadPath(void)
 {
     return callbacks->loadPath ? (*callbacks->loadPath)() : NULL;
 }
 
 /* xlosParsePath - return the load path */
-xlEXPORT char *xlosParsePath(char **pp)
+xlEXPORT const char *xlosParsePath(const char **pp)
 {
     return callbacks->parsePath ? (*callbacks->parsePath)(pp) : NULL;
 }
@@ -46,7 +46,7 @@ void xlosEnter(void)
 }
 
 /* xlosFindSubr - find an os specific function */
-xlEXPORT xlValue (*xlosFindSubr(char *name))(void)
+xlEXPORT xlValue (*xlosFindSubr(const char *name))(void)
 {
     xlSubrDef *sdp;
     xlXSubrDef *xsdp;
@@ -64,14 +64,14 @@ xlEXPORT xlValue (*xlosFindSubr(char *name))(void)
 }
 
 /* xlosError - print an error message */
-xlEXPORT void xlosError(char *msg)
+xlEXPORT void xlosError(const char *msg)
 {
     if (callbacks->error)
         (*callbacks->error)(msg);
 }
 
 /* xlosFileModTime - return the modification time of a file */
-xlEXPORT int xlosFileModTime(char *fname,xlFIXTYPE *pModTime)
+xlEXPORT int xlosFileModTime(const char *fname,xlFIXTYPE *pModTime)
 {                        
     return callbacks->fileModTime ? (*callbacks->fileModTime)(fname,pModTime) : FALSE;
 }
@@ -108,7 +108,7 @@ xlEXPORT void xlosConsolePutC(int ch)
 }
 
 /* xlosConsolePutS - output a string to the terminal */
-xlEXPORT void xlosConsolePutS(char *str)
+xlEXPORT void xlosConsolePutS(const char *str)
 {
     while (*str)
         xlosConsolePutC(*str++);
